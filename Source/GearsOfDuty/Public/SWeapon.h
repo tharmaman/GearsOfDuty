@@ -8,6 +8,7 @@
 
 // forward declaring for optimization
 class USkeletalMeshComponent;
+class UDamageType;
 
 UCLASS()
 class GEARSOFDUTY_API ASWeapon : public AActor
@@ -25,6 +26,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComp;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void Fire();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	TSubclassOf<UDamageType> DamageType;
 
 public:	
 	// Called every frame

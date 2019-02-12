@@ -79,6 +79,7 @@ DerivedDataCache/*
 
 # Content for the editor to use
 Content/AnimStarterPack/*
+Content/WeaponEffects/*
 
 # Mac Artifacts
 .DS_Store

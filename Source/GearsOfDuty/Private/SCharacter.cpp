@@ -77,3 +77,15 @@ void ASCharacter::EndCrouch()
 	UnCrouch();
 }
 
+FVector ASCharacter::GetPawnViewLocation() const
+{
+	// don't need to inherit from super if camera exists
+	if (CameraComp)
+	{
+		return CameraComp -> GetComponentLocation();
+	}
+
+	// otherwise return super
+	return Super::GetPawnViewLocation();
+}
+
