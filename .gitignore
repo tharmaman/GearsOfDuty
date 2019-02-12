@@ -78,7 +78,7 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Content for the editor to use
-# Add as needed for space to push on github
+Content/AnimStarterPack/*
 
 # Mac Artifacts
 .DS_Store
