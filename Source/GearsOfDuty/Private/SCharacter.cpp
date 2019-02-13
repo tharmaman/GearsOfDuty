@@ -36,6 +36,8 @@ void ASCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Cameracomp -> SetFieldOfView();
+
 }
 
 // Called to bind functionality to input
