@@ -9,6 +9,7 @@
 // forward declaring classes for optimization
 class UCameraComponent;
 class USpringArmComponent;
+class ASWeapon;
 
 UCLASS()
 class GEARSOFDUTY_API ASCharacter : public ACharacter
@@ -39,9 +40,30 @@ protected:
 
 	bool bWantsToZoom;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float ZoomedFOV;
 
-	float Default
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100))
+	float ZoomInterpSpeed;
+
+	/* Default FOV set during begin play */
+	float DefaultFOV;
+
+	void BeginZoom();
+
+	void EndZoom();
+
+	ASWeapon* CurrentWeapon;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<ASWeapon> StarterWeaponClass;
+
+	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
+	FName WeaponAttachSocketName;
+
+	void StartFire();
+
+	void StopFire();
 
 public:	
 	// Called every frame
