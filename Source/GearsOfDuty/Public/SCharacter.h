@@ -58,12 +58,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	TSubclassOf<ASWeapon> StarterWeaponClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	TSubclassOf<ASWeapon> SecondWeaponClass;
+
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
+
+	bool bIsPrimary;
 
 	void StartFire();
 
 	void StopFire();
+
+	void Reload();
+
+	void SwitchWeapon();
 
 public:	
 	// Called every frame

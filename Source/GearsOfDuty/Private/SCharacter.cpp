@@ -47,6 +47,7 @@ void ASCharacter::BeginPlay()
 	{
 		CurrentWeapon -> SetOwner(this);
 		CurrentWeapon -> AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		bIsPrimary = true;
 	}
 }
 
@@ -87,6 +88,12 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent -> BindAction("Fire", IE_Pressed, this, &ASCharacter::StartFire);
 	PlayerInputComponent -> BindAction("Fire", IE_Released, this, &ASCharacter::StopFire);
 
+	// reload code
+	// PlayerInputComponent -> BindAction("Reload", IE_Pressed, this, &ASCharacter::Reload); made in blueprint for now
+
+	// switch weapon
+	PlayerInputComponent -> BindAction("SwitchWeapon", IE_Pressed, this, &ASCharacter::SwitchWeapon);
+
 }
 
 void ASCharacter::MoveForward(float Value)
@@ -119,6 +126,15 @@ void ASCharacter::EndZoom()
     bWantsToZoom = false;
 }
 
+// made in blueprint for now
+//void ASCharacter::Reload()
+//{
+//	if(CurrentWeapon)
+//	{
+//
+//	}
+//}
+
 void ASCharacter::StartFire()
 {
 	if(CurrentWeapon)
@@ -133,6 +149,43 @@ void ASCharacter::StopFire()
 	{
 		CurrentWeapon -> StopFire();
 	}
+}
+
+void ASCharacter::SwitchWeapon()
+{
+	// spawn a default weapon
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	if (bIsPrimary)
+	{
+		// remove current weapon
+		GetWorld() -> DestroyActor(CurrentWeapon);
+
+		// set new weapon
+		CurrentWeapon = GetWorld() -> SpawnActor<ASWeapon>(SecondWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		if (CurrentWeapon)
+		{
+			CurrentWeapon -> SetOwner(this);
+			CurrentWeapon -> AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		}
+		bIsPrimary = false;
+	}
+	else
+	{
+		// remove current weapon
+		GetWorld() -> DestroyActor(CurrentWeapon);
+
+		// set new weapon
+		CurrentWeapon = GetWorld() -> SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		if (CurrentWeapon)
+		{
+			CurrentWeapon -> SetOwner(this);
+			CurrentWeapon -> AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
+		}
+		bIsPrimary = true;
+	}
+
 }
 
 FVector ASCharacter::GetPawnViewLocation() const

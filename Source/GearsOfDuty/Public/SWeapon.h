@@ -22,6 +22,8 @@ public:
 	ASWeapon();
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USkeletalMeshComponent* MeshComp;
 
@@ -38,6 +40,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	UParticleSystem* MuzzleEffect;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	USoundBase* FireSound;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	UParticleSystem* DefaultImpactEffect;
@@ -57,6 +62,15 @@ protected:
 	void virtual Fire();	// make virtual in order to override
 
 	FTimerHandle TimerHandle_TimeBetweenShots;
+
+	float LastFireTime;
+
+	// RPM - Bullets per minute fired by weapon
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float RateOfFire;
+
+	// Derived from RateOfFire
+	float TimeBetweenShots;
 
 public:
 	void StartFire();

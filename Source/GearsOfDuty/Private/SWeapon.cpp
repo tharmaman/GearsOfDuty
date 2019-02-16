@@ -31,6 +31,15 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "Target";
 
 	BaseDamage = 20.0f;
+
+	RateOfFire = 650;
+}
+
+void ASWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TimeBetweenShots = 60 / RateOfFire;
 }
 
 void ASWeapon::Fire()
@@ -102,6 +111,8 @@ void ASWeapon::Fire()
 		}
 
 		PlayFireEffects(TracerEndPoint);
+
+		LastFireTime = GetWorld() -> TimeSeconds;
 	}
 }
 
@@ -123,6 +134,11 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 		}
 	}
 
+	if (FireSound)
+	{
+		UGameplayStatics::SpawnSoundAttached(FireSound, MeshComp, MuzzleSocketName);
+	}
+
 	APawn* MyOwner = Cast<APawn>(GetOwner());
 
 	if (MyOwner)
@@ -137,8 +153,9 @@ void ASWeapon::PlayFireEffects(FVector TraceEnd)
 
 void ASWeapon::StartFire()
 {
+	float FirstDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld() -> TimeSeconds, 0.0f);
 
-	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, 1.0f ,true);
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);
 
 }
 
