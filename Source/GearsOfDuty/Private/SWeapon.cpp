@@ -112,6 +112,8 @@ void ASWeapon::Fire()
 
 		PlayFireEffects(TracerEndPoint);
 
+
+
 		LastFireTime = GetWorld() -> TimeSeconds;
 	}
 }

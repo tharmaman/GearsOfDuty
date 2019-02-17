@@ -45,6 +45,9 @@ protected:
 	USoundBase* FireSound;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+	USoundBase* EmptySound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
 	UParticleSystem* DefaultImpactEffect;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
@@ -68,6 +71,10 @@ protected:
 	// RPM - Bullets per minute fired by weapon
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	float RateOfFire;
+
+	// Magazine size
+	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
+	float MagazineSize;
 
 	// Derived from RateOfFire
 	float TimeBetweenShots;
