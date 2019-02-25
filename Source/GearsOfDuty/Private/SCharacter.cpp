@@ -5,7 +5,10 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "SWeapon.h"
+#include "SHealthComponent.h"
+#include "GearsOfDuty.h"
 #include "SCharacter.h"
 
 // Sets default values
@@ -20,6 +23,10 @@ ASCharacter::ASCharacter()
 
 	// enabling support for crouching
 	GetMovementComponent() -> GetNavAgentPropertiesRef().bCanCrouch = true;
+
+    GetCapsuleComponent() -> SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
+
+    HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp -> SetupAttachment(SpringArmComp);
@@ -49,6 +56,8 @@ void ASCharacter::BeginPlay()
 		CurrentWeapon -> AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
 		bIsPrimary = true;
 	}
+
+	HealthComp -> OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 }
 
 // Called every frame
@@ -149,6 +158,11 @@ void ASCharacter::StopFire()
 	{
 		CurrentWeapon -> StopFire();
 	}
+}
+
+void ASCharacter::OnHealthChanged(USHealthComponent* HealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
+{
+
 }
 
 void ASCharacter::SwitchWeapon()
