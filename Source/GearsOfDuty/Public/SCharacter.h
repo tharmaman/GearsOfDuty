@@ -69,6 +69,10 @@ protected:
 
 	bool bIsPrimary;
 
+	// pawn died previously
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
+	bool bDied;
+
 	void StartFire();
 
 	void StopFire();
